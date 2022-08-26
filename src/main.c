@@ -3,6 +3,8 @@
 #include "pico/stdlib.h"
 #include "pico/time.h"
 
+#include "eth_phy.h"
+
 #define HW_PINNUM_LED0      (25)    // Pico onboard LED
 
 static struct repeating_timer blink_timer;
@@ -24,5 +26,9 @@ int main() {
   gpio_set_dir(HW_PINNUM_LED0, GPIO_OUT);
   add_repeating_timer_ms(-500, blink_callback, NULL, &blink_timer);
 
-  while (1) tight_loop_contents();
+  eth_phy_init();
+
+  while (1) {
+    eth_phy_read_buffer();
+  }
 }

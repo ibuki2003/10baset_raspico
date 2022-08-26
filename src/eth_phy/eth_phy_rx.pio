@@ -1,0 +1,57 @@
+.program eth_phy_rx
+.origin 0
+
+.define CONT_THRES 16
+
+// each loop needs 5 cycles, should be 50ns
+// freq = 100MHz
+
+.wrap_target
+    ;irq;
+    ; push 0 at first
+    set x, 0b0
+    in x, 1
+    set x, 0b1
+    in x, 1
+
+    wait 1 pin 0 [3]
+
+hi:
+    set x, CONT_THRES
+hi_l:
+    jmp pin hi_cont
+    ; get 0, push
+    set y, 0b0
+    in y, 1
+    ; switch lo
+    jmp lo
+hi_cont:
+    ; get 1, push
+    set y, 0b1
+    in y, 1
+
+    nop
+    jmp x-- hi_l
+    jmp end
+
+lo:
+    set x, CONT_THRES
+lo_l:
+    jmp pin hi_push
+    ; get 0, push
+    set y, 0b0
+    in y, 1
+    nop
+    jmp x-- lo_l
+    jmp end
+hi_push:
+    ; get 1, push
+    set y, 0b1
+    in y, 1
+    jmp hi
+
+end:
+    push ; flush
+    irq 0
+.wrap
+
