@@ -4,16 +4,8 @@ The goal of this project is to communicate with generic ethernet equipments.
 
 ## Features / TODO
 
-- [x] 10BASE-T TX
-- [x] 10BASE-T RX
-- protocols
-  - [ ] ARP
-  - [ ] IP
-  - [ ] DHCP
-  - [ ] ICMP
-  - [ ] TCP
-  - [ ] HTTP
-  - [ ] UDP
+- [x] 10BASE-T Duplex
+- [x] Some protocols support powered by lwIP
 - [ ] blinking status lamps on the connector
 - [ ] multiple NIC, behave as switching hub
 

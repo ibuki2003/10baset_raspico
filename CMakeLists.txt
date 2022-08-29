@@ -11,12 +11,16 @@ pico_sdk_init()
 file(GLOB SRC_FILES src/*.c src/**/*.c)
 add_executable(${target_name} ${SRC_FILES})
 
+target_include_directories(${target_name} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>)
+
 pico_generate_pio_header(${target_name} ${CMAKE_CURRENT_LIST_DIR}/src/eth_phy/eth_phy_tx.pio)
 pico_generate_pio_header(${target_name} ${CMAKE_CURRENT_LIST_DIR}/src/eth_phy/eth_phy_rx.pio)
 
 # Add pico_stdlib library which aggregates commonly used features
 target_link_libraries(${target_name} PRIVATE
   pico_stdlib
+  pico_stdio
+  pico_lwip
   hardware_pio
   hardware_irq
   hardware_dma

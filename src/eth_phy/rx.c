@@ -4,6 +4,8 @@
 #include "hardware/pio.h"
 #include "hardware/dma.h"
 
+#include "rp_ethernetif/rp_ethernetif.h"
+
 #include "eth_phy_rx_pio.h"
 
 #define RX_PIN 18
@@ -78,7 +80,7 @@ void eth_phy_read_buffer() {
   while (dbuf_csr != dbuf_tail) {
     if (reading) {
       if ((dbuf[dbuf_csr] & 0x00ff) == 0) { // end of packet
-        // TODO: call handler
+        rp_ethernetif_input(global_netif, cbuf, csr);
 
         reading = false;
       } else {
